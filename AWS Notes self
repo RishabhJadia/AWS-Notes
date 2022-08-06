@@ -1,0 +1,397 @@
+AWS Notes:
+cloud computing - pay-as-you-go pricing
+cloud computing deployment models:
+	cloud based
+	on-premises/private cloud
+	hybrid
+
+
+Amazon EC2 (elastic compute cloud):
+
+	cost save -->pay for running instances not for terminated/stop instances
+	sharing underlying hardware--->multitenancy
+	resizable
+	support vertical scaling--> at run time, can increase/decrease memmory/cpu
+	horizontally-->adding new instances
+
+EC2 types:
+	cpu, memory, storage, networking
+	general purpose-->good for web services/code repo, support -->compute, networking, memory 
+	compute optimize-->good for high performance computing, processors, batch processing ex: gaming, scientific modelling
+	memory optimize-->good for memory related task, high performance database i.e., requires large amounts of data to be preloaded before running an application
+	accelerated optimize-->good for number calculation, graphic processing, hardware
+	storage optimize-->good for high performance for local stored data it includes, DFS, OLTP, data warehouse
+
+	IOPS(Input/Ouput operations per second)-->measure performance of storage device. i.e., how many different I/O operations a device can perrform in one second
+
+EC2 pricing:
+	on-demand--> for short term, irregular workloads --> pay for compute time use only
+	EC2 saving plan--> reduce compute costs by committing to a fixed amount of compute usage for a 1-year or 3-year term
+	reserved instance-->billing discounted applied to use of on-demnd instance. --> it has standard reserved, convertible reserved (1/3 year), scheduled reserved (1 year)
+	spot instance-->for flexible start and end date ex:- survey
+	dedicated hosts-->are physical server with amazon ec2 instace full capacity to use. More Expensve
+
+EC2 auto scaling:
+	anytime can add/remove instance
+
+	approches:
+		dynamic scaling
+		predictive scaling
+
+Elastic Load balance:--> it takes the requests and routes them to the instances.
+	
+Messaging and queuing:placing messages into buffer
+	services:
+		SQS(Simple queue service)-->allow send, store, receive b/w software components
+		SNS(simple notification service)-->send out messages to services/end users
+
+Serverless computing:
+	AWS Lambda
+	Fargate is a serverless compute platform for ECS or EKS
+	ECS or EKS are container based
+
+Region:-->geographical area that contains AWS resources.
+	Amazon CloudFront -->
+		retrives the data from edge location (cache data). is a content delivery service.
+		
+		edge location--> is a data center that an AWS service uses to perform service-specific operations  and also for speed delivery
+
+	AWS Outposts --> is a service that can use to run AWS infrastructure, services, and tools in own on-premises data center in a hybrid approach
+
+	Amazon cloud formation--> Infrastructure as code where we are preparing the templates/script to automitcally create the service. If any defects found then it rollback automatically. 
+
+
+AWS resources:
+	AWS Elastic Beanstalk-->provide code and configure. Free services
+		Adjust capacity
+		Load balancing
+		Automatic scaling
+		Application health monitoring
+
+Networking:
+	public 
+	VPC(virtual private cloud)-->is private network in aws. allow peopple if they are coming from approved network
+	subnets-->chunks of ip addresses that allow to group resource (ec2 instance) together
+		subnet is a section of a virtual private cloud (VPC) in which you can group resources based on security or operational needs.
+
+		public subnets -->  contain resources that need to be accessible by the public (ec2 instance) and have access to the internet gateway
+		private subnets--> contain resources that need to be accessible by the private (database) and do not have access to the internet gatway
+	Direct Connect--> establish a completely private, dedicated fiber connection from  data center to AWS. It reduce network cost increase amount of network that travel
+
+Internet gatway -->
+	- VPC to the internet.
+	- connection between a VPC and the internet. It allows public traffic from the internet to access a VPC.
+
+Access control list:-->is a virtual firewall that controls inbound and outbound traffic at the subnet level. bydefault all are blocked (port/ip address). It is stateless
+	Stateless controls-->it always checks its list. allow all inbound and outbound traffic
+
+Security group--> is a virtual firewall that controls inbound and outbound traffic for an Amazon EC2 instance.
+	Stateful controls--> deny all inbound and outbound traffic
+
+DNS:
+	Route 53--> is a dns service
+		DNS resolution is the process of translating a domain name to an IP address.
+		Connect user requests to infrastructure in AWS and outside of AWS.
+
+
+Storage:
+	Instance store volume-->temporary block level storage. Which store data temporary when ec2 stop/terminate. all data gets deleted.
+	EBS- To overcome from Instance store volumne and if you dont want to delete entire db on stopping of ec2 instance. Then EBS comes in picture.
+		EBS Volume --> it ia virtual hard drive. provide the backup called snapshots.
+		EBS snapshot --> is an incremental backup
+
+		EBS and EC2 instance both are in same AZ.
+
+	S3-->allow to store and retrive unlimited amount of data at any scale 
+		s3 storage classes:
+			S3 Standard--> Frequent and rapid access of data. Hosting static website (html, css, js)
+			S3 Infrequent Access (IA)--> Less frequent and rapid access of data. backup, disaster recovery files and long term files. Has minimum 3 AZ.
+			S3 1 zone IA--> Has 1 AZ only.
+			S3 Intelligent Teir--> Check the access pattern and move the data from S3 IA to S3 Standard and vice-versa.
+			S3 Glacier --> Less frequent and less rapid access of data. data archived in s3 glacier (inform of vault). We can access data from vault using vault lock policy. We can set policy in vault using WRITE ONCE READ MANY. Once policy locked can not changed. retrive objects from minutes to few hours.
+			S3 Life Cycle-->Here, we define configuration which will automatically move data. ex: s3 standard-90 days --> s3 IA-30 days--> s3 glacier - 120 days   
+			S3 Glacier deep Archive --> retrive of archived objects within 12 hour
+
+		Storage VS Block level storage:
+			Storage level -->store files completely. every time there's a change to the object, you must re-upload the entire file and has no delta updates.
+			Block Level-->Store files in blocks. every time there's a change to the object, engine only updates the blocks where those bits live.
+
+	Amazon Elastic File System--> is a scalable file system used with AWS Cloud services and on-premises resources. As you add and remove files, Amazon EFS grows and shrinks automatically. It can scale on demand to petabytes without disrupting applications. 
+
+		EFS is regional service and available in multiple AZ.
+		AWS direct connect-->
+			- On-primses servers can access AWS EFS
+			- AWS Direct Connect is a service that enables you to establish a dedicated private connection between your data center and VPC without using public internet
+
+
+
+
+The private connection that AWS Direct Connect provides helps you to reduce network costs and increase the amount of bandwidth that can travel through your network.
+
+	RDS--> 
+		Amazon Aurora--> Its is an enterprise class relational db. It comes in two form MySQL and Postgresql.  If your workloads require high availability. It replicates six copies of your data across three Availability Zones and continuously backs up your data to Amazon S3.
+
+	AWS Redshift--> data warehousing service that is use for big data analytics.
+	AWS DMS--> used for migration from any related db to non related db or vice versa. without any downtime/affecting the users.
+	
+
+Security:
+	AWS Organization:
+		It can manage multiple aws account.
+		It support SCP (service Control Policy) where, it applied to root unser, individual and OU.
+	AWS OU:
+		Same business and security requirements
+		whatevery access given to OU then same applies to child also.
+	IAM Policy:
+		IAM user, groups, roles but not to root user
+		create policy of specific / full bucket and assign to respective resource
+
+	AWS artifacts:
+		- provides on-demand access to AWS security and compliance reports  
+		type:
+			artifact agreements
+			artifact reports
+    DOS and DDOS-->
+    	DOS--> one hacker target the application to make unavailable for other users
+    	DDOS--> Multiple hacker target the application to make unavailable for other users
+    To overcome from DOS/DDOS, we use the AWS SHIELD:
+    AWS Sheild:
+    	- provides two level of protection
+    		Standard-->protect aws customer with no cost and detect malicious traffic and automatically migrate it.
+    		Advance-->its a paid service and provide detailed attack diagnostics and detect and mitigate.
+    			It integrate with Amazon CloudFront, Amazon Route 53, and Elastic Load Balancing. also with WAF by writing custom rule
+    AWS Key Management Service (AWS KMS)
+    	- perform encryption operations through the use of cryptographic keys. A cryptographic key is a random string of digits. you can choose the specific levels of access control.
+    AWS WAF:
+    	- allow and block the traffic
+    	- works with AWS cloudfront and load balancer
+    	- offer protection from common web exploit at 7 layers
+    AWS Inspector:
+    	improve the security and compliance of applications by running automated security assessments
+    	provide the suggestion by severity level and tell us how to fix it
+    Amazon GuardDuty:
+    	provides intelligent threat detection for your AWS infrastructure and resources
+    	If GuardDuty detects any threats, you can review detailed findings about them from the AWS Management Console
+
+Monitoring and Analytics:
+	AWS Cloud Watch:
+		- Based on metric it collects the data point resouces and graph them (create the dashboard),
+		- Monitor and manage the application
+		- It also send notification using cloud watch alarm
+
+	CloudTrail:
+		Logs of actions, where all information are recorded about the application/services.
+		Its updates within 15min.
+	Cloudtrail Insite:
+		Feature of cloudtrail which auto detect unusual acitivity.
+
+	AWS Trusted Advisor:
+		It inspects your AWS environment and provides real-time recommendations in accordance with AWS best practices.
+		Best practices:
+			cost optimization- includes checks for unused or idle resources that could be eliminated and provide cost savings.
+
+			performace- AWS Trusted Advisor also helps improve the performance of your services by providing recommendations for how to take advantage of provisioned throughput.
+
+			security- includes checks that help you to review your permissions and identify which AWS security features to enable.
+
+			fault tolerance- includes checks to help you improve your applications’ availability and redundancy.
+			service limit-
+
+The AWS Well-Architected Framework (WAF):
+	It suggest how to design the system based oon five pillars:
+	Pillars:
+		Operational excellence -  the ability to run workloads effectively, gain insights into their operations, and continuously improve supporting processes to deliver business value
+
+		Security-  on protecting data, systems, and assets. It also focuses on using cloud technologies to improve the security of your workloads.
+
+		Reliable- on the ability of a workload to consistently and correctly perform its intended functions.
+		performance- 
+			focuses on using computing resources efficiently to meet system requirements, and to maintain that efficiency as demand changes and technologies evolve.
+		cost optimization- 
+
+Six advantages of cloud computing:
+	Trade upfront expense for variable expense.
+	Benefit from massive economies of scale.
+	Stop guessing capacity.
+	Increase speed and agility.
+	Stop spending money running and maintaining data centers.
+	Go global in minutes.
+
+Six Cloud Adoption Framework:
+	Business Perspective-->
+		deals with business needs and that IT investments link to key business results.
+		helps you to move from a model that separates business and IT strategies into a business model that integrates IT strategy
+	People-->
+		development of an organization-wide change management
+		Human Resources (HR) employees prepare their teams for cloud adoption by updating organizational processes and staff skills to include cloud-based competencies.
+	Goverence-->
+		Update the staff skills and processes necessary to ensure business governance
+		The Governance Perspective helps you understand how to update the staff skills and organizational processes that are necessary to ensure business governance in the cloud. 
+
+	Platform-->principles and patterns for implementing new solution and migrating on-premises workloads
+	Security-->Security, visibility, auditability, control, and agility. 
+	Operations-->
+		enable, run, use, operate, and recover IT workload.
+		AWS Cloud Adoption Framework also includes principles for operating in the cloud by using agile best practices.
+
+
+Six Strategies for Migration:
+	Rehosting -->also known as “lift-and-shift” involves moving applications without changes
+	Replatforming --> also known as “lift, tinker, and shift,” involves making a few cloud optimizations to realize a tangible benefit. and without changing the core architecture of the application
+	Refactoring --> also known as re-architecting involves reimagining how an application is architected and developed by using cloud-native features
+	Repurchasing--> involves moving from a traditional license to a software-as-a-service model.
+	Retaining --> consists of keeping applications that are critical for the business in the source environment
+	Retiring--> is the process of removing applications that are no longer needed.
+
+AWS Snow Family members:
+	- Physical devices that physically transport up to exabytes of data into and out of AWS.
+	It consists of:
+		AWS Snowcone --> is a small, rugged, and secure edge computing and data transfer device. 
+			It features 2 CPUs, 4 GB of memory, and 8 TB of usable storage
+		AWS snowball:
+			Snowball Edge Storage Optimized devices--> are well suited for large-scale data migrations and recurring transfer workflows.
+
+				Storage: 80 TB of hard disk drive (HDD) capacity for block volumes and Amazon S3 compatible object storage, and 1 TB of SATA solid state drive (SSD) for block volumes. 
+				Compute: 40 vCPUs, and 80 GiB of memory to support Amazon EC2 sbe1 instances (equivalent to C5).
+
+			Snowball Edge Compute Optimized --> provides powerful computing resources for use cases such as machine learning, full motion video analysis, analytics, and local computing stacks
+
+				Storage: 42-TB usable HDD capacity for Amazon S3 compatible object storage or Amazon EBS compatible block volumes and 7.68 TB of usable NVMe SSD capacity for Amazon EBS compatible block volumes. 
+				
+				Compute: 52 vCPUs, 208 GiB of memory, and an optional NVIDIA Tesla V100 GPU. Devices run Amazon EC2 sbe-c and sbe-g instances, which are equivalent to C5, M5a, G3, and P3 instances.
+
+		AWS Snowmobile:
+			is an exabyte-scale data transfer service used to move large amounts of data to AWS. 
+
+			You can transfer up to 100 petabytes of data per Snowmobile, a 45-foot long ruggedized shipping container, pulled by a semi trailer truck.
+
+
+Innovate with AWS Services
+	Artificial intelligence
+		Convert speech to text with Amazon Transcribe.
+		Discover patterns in text with Amazon Comprehend.
+		Identify potentially fraudulent online activities with Amazon Fraud Detector.
+		Build voice and text chatbots with Amazon Lex.
+
+	Machine learning (ML) development
+		is complex, expensive, time consuming, and error prone. AWS offers Amazon SageMaker to remove the difficult work from the process
+		Amazon Textract is a machine learning service that automatically extracts text and data from scanned documents
+		AWS DeepRacer is an autonomous 1/18 scale race car that you can use to test reinforcement learning models.
+
+	Amazon Augmented AI (Amazon A2I)
+		provides built-in human review workflows for common machine learning use cases, such as content moderation and text extraction from documents.
+		With Amazon A2I, you can also create your own workflows for machine learning models built on Amazon SageMaker or any other tools.
+
+pricing and support:
+	AWS Free Tier:
+		always free
+		12 months
+		trail
+
+How AWS pricing works
+	Pay for what you use.
+	Pay less when you reserve.
+	Pay less with volume-based discounts when you use more
+
+AWS Lambda:
+	For AWS Lambda, you are charged based on the number of requests for your functions and the time that it takes for them to run.
+
+ 	AWS Lambda allows 1 million free requests and up to 3.2 million seconds of compute time per month.
+
+Amazon EC2:
+	With Amazon EC2, you pay for only the compute time that you use while your instances are running.
+	Spot Instance would provide you with up to 90% cost savings while still meeting the availability requirements of your workload.
+
+Amazon S3:
+	Storage - You pay for only the storage that you use. You are charged the rate to store objects in your Amazon S3 buckets based on your objects’ sizes, storage classes, and how long you have stored each object during the month.
+
+	Requests and data retrievals - You pay for requests made to your Amazon S3 objects and buckets. For example, suppose that you are storing photo files in Amazon S3 buckets and hosting them on a website.
+
+	Data transfer - There is no cost to transfer data between different Amazon S3 buckets or from Amazon S3 to other services within the same AWS Region.
+
+	Management and replication - You pay for the storage management features that you have enabled on your account’s Amazon S3 buckets. These features include Amazon S3 inventory, analytics, and object tagging.
+
+AWS billing and Cost management console:
+	Compare your current month-to-date balance with the previous month, and get a forecast of the next month based on current usage.
+	View month-to-date spend by service.
+	View Free Tier usage by service.
+
+	Access Cost Explorer and create budgets.
+	Purchase and manage Savings Plans.
+
+Consolidated billing:
+	consolidated billing feature of AWS Organizations enables you to receive a single bill for all AWS accounts in your organization.
+	the ability to share bulk discount pricing, Savings Plans, and Reserved Instances across the accounts in your organizatio
+
+AWS Budgets:
+	you can create budgets to plan your service usage, service costs, and instance reservations.
+
+	The information in AWS Budgets updates three times a day. This helps you to accurately determine how close your usage is to your budgeted amounts or to the AWS Free Tier limits.
+
+	In AWS Budgets, you can also set custom alerts when your usage exceeds (or is forecasted to exceed) the budgeted amount.
+
+AWS Cost Explorer:
+	AWS Cost Explorer is a tool that enables you to visualize, understand, and manage your AWS costs and usage over time.
+
+	AWS Cost Explorer includes a default report of the costs and usage for your top five cost-accruing AWS services. You can apply custom filters and groups to analyze your data.
+
+AWS Support:
+	Basic-
+		- is free for all AWS customers. With Basic Support, you can also contact AWS for billing questions and service limit increases.
+		- With Basic Support, you have access to a limited selection of AWS Trusted Advisor checks. Additionally, you can use the AWS Personal Health Dashboard, a tool that provides alerts and remediation guidance when AWS is experiencing events that may affect you
+	
+	Developer-
+		Best practice guidance
+		Client-side diagnostic tools
+		Building-block architecture support, which consists of guidance for how to use AWS offerings, features, and services together
+
+	Business-
+		Use-case guidance to identify AWS offerings, features, and services that can best support your specific needs
+		All AWS Trusted Advisor checks
+		Limited support for third-party software, such as common operating systems and application stack components
+		Event management
+	
+	Enterprise-
+		Application architecture guidance, which is a consultative relationship to support your company’s specific use cases and applications
+
+		Infrastructure event management: A short-term engagement with AWS Support that helps your company gain a better understanding of your use cases. This also provides your company with architectural and scaling guidance.
+
+		provide access to online training with self-paced 
+
+		A Technical Account Manager
+
+AWS Marketplace:
+	is a digital catalog that includes thousands of software listings from independent software vendors. You can use AWS Marketplace to find, test, and buy software that runs on AWS.
+
+	Market place categories:
+		Infrastructure Products, Business Applications, Data Products, and DevOps.
+
+
+
+
+A service that monitors your applications and automatically adds or removes capacity from your resource groups in response to changing demand - This response option describes AWS Auto Scaling.
+
+A service that provides data that you can use to monitor your applications, optimize resource utilization, and respond to system-wide performance changes - This response option describes Amazon CloudWatch. Although Elastic Load Balancing does optimize resource utilization by distributing incoming traffic across available resources, this would not be the best response option because Elastic Load Balancing does not provide all the other listed features.
+
+
+Amazon ElastiCache-
+	is a service that adds caching layers on top of your databases to help improve the read times of common requests.
+	A service that enables you to set up, manage, and scale a distributed in-memory or cache environment in the cloud - This response option describes Amazon ElastiCache.
+
+
+An Availability Zone is a single data center or a group of data centers within a Region. 
+
+Availability Zones are located tens of miles apart from each other. This helps them to provide interconnectivity to support the services and applications that run within a Region.
+
+ 
+A separate geographical location with multiple locations that are isolated from each other - This response option describes a Region.
+
+The server from which Amazon CloudFront gets your files - This response option describes an origin.
+
+A site that Amazon CloudFront uses to cache copies of content for faster delivery to users at any location - This response option describes an Edge location.
+
+Amazon Quantum Ledger Database (Amazon QLDB) is a ledger database service. You can use Amazon QLDB to review a complete history of all the changes that have been made to your application data.
+
+AWS compute optimizer:
+	recommends optimal AWS resource to reduce cost and improve workload performance
+
