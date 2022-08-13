@@ -25,10 +25,20 @@ EC2 types:
 	IOPS(Input/Ouput operations per second)-->measure performance of storage device. i.e., how many different I/O operations a device can perrform in one second
 
 EC2 pricing:
-	on-demand--> for short term, irregular workloads --> pay for compute time use only
+	on-demand--> for short term, irregular workloads --> pay for compute time use only. No upfront costs or minimum contracts apply. The instances run continuously until you stop them, and you pay for only the compute time you use.
+
 	EC2 saving plan--> reduce compute costs by committing to a fixed amount of compute usage for a 1-year or 3-year term
+
 	reserved instance-->billing discounted applied to use of on-demnd instance. --> it has standard reserved, convertible reserved (1/3 year), scheduled reserved (1 year)
-	spot instance-->for flexible start and end date ex:- survey
+
+		Reserved Instance pricing is available for which of the following AWS services: EC2 and RDS
+
+		Reserved Instances provide you with significant savings (up to 75%) on your Amazon EC2 costs compared to On-Demand Instance pricing. Reserved Instances are not physical instances, but rather a billing discount applied to the use of On-Demand Instances in your account. You can purchase a Reserved Instance for a one-year or three-year commitment, with the three-year commitment offering a bigger discount. Reserved instances are a great fit for application with a steady-state usage. Reserved instances cannot be interrupted.
+
+Reserved Instances to run applications with a predictable usage over the next one year
+
+	spot instance-->for flexible start and end date ex:- survey 90% cost save
+
 	dedicated hosts-->are physical server with amazon ec2 instace full capacity to use. More Expensve
 
 EC2 auto scaling:
@@ -54,11 +64,16 @@ Region:-->geographical area that contains AWS resources.
 	Amazon CloudFront -->
 		retrives the data from edge location (cache data). is a content delivery service.
 		
-		edge location--> is a data center that an AWS service uses to perform service-specific operations  and also for speed delivery
+		edge location--> is a data center that an AWS service uses to perform service-specific operations and also for speed delivery
 
 	AWS Outposts --> is a service that can use to run AWS infrastructure, services, and tools in own on-premises data center in a hybrid approach
 
-	Amazon cloud formation--> Infrastructure as code where we are preparing the templates/script to automitcally create the service. If any defects found then it rollback automatically. 
+	Amazon cloudformation-->
+		Infrastructure as code This means that you can build an environment by writing lines of code instead of using the AWS Management Console to individually provision resources
+		
+		We are preparing the templates/script to automitcally create the service. If any defects found then it rollback automatically.
+
+		AWS CloudFormation allows you to use programming languages or a simple text file to model and provision, in an automated and secure manner, all the resources needed for your applications across all Regions and accounts. Think infrastructure as code; think CloudFormation. You cannot use CloudFormation for running commands or managing patches on servers. 
 
 
 AWS resources:
@@ -67,31 +82,59 @@ AWS resources:
 		Load balancing
 		Automatic scaling
 		Application health monitoring
+	
+Amazon Virtual Private Cloud (Amazon VPC):
+	Amazon VPC enables you to provision an isolated section of the AWS Cloud. In this isolated section, you can launch resources in a virtual network that you define. Within a virtual private cloud (VPC), you can organize your resources into subnets. A subnet is a section of a VPC that can contain resources such as Amazon EC2 instances.
+
 
 Networking:
 	public 
-	VPC(virtual private cloud)-->is private network in aws. allow peopple if they are coming from approved network
-	subnets-->chunks of ip addresses that allow to group resource (ec2 instance) together
-		subnet is a section of a virtual private cloud (VPC) in which you can group resources based on security or operational needs.
+	VPC(virtual private cloud)-->is private network in aws. allow people if they are coming from approved network
+	
+	Subnets: 
+		chunks of ip addresses that allow to group resource (ec2 instance) together
+
+		subnet is a section of a VPC in which you can group resources based on security or operational needs. Subnets can be public or private.
 
 		public subnets -->  contain resources that need to be accessible by the public (ec2 instance) and have access to the internet gateway
 		private subnets--> contain resources that need to be accessible by the private (database) and do not have access to the internet gatway
-	Direct Connect--> establish a completely private, dedicated fiber connection from  data center to AWS. It reduce network cost increase amount of network that travel
+
+		subnets can communicate with each other. For example, you might have an application that involves Amazon EC2 instances in a public subnet communicating with databases that are located in a private subnet
+	
+	AWS Direct Connect-->
+		Establish a completely private dedicated fiber connection from data center to VPC.
+
+		AWS Direct Connect provides helps you to reduce network costs and increase the amount of bandwidth that can travel through your network
 
 Internet gatway -->
-	- VPC to the internet.
+	- connect VPC to the internet.
 	- connection between a VPC and the internet. It allows public traffic from the internet to access a VPC.
 
-Access control list:-->is a virtual firewall that controls inbound and outbound traffic at the subnet level. bydefault all are blocked (port/ip address). It is stateless
-	Stateless controls-->it always checks its list. allow all inbound and outbound traffic
+Virtual private gateway:
+	Allows traffic into the VPC only if it is coming from an approved network.
 
-Security group--> is a virtual firewall that controls inbound and outbound traffic for an Amazon EC2 instance.
-	Stateful controls--> deny all inbound and outbound traffic
+Network traffic in a VPC:
+
+	Permission in VPC:
+		Network access control lists (ACLs):
+			Is a virtual firewall that controls inbound and outbound traffic at the subnet level.
+			Each AWS account includes a default network ACL.
+			All network ACLs have an explicit deny rule.
+			Its is stateless that didn't remember its previous states (what happened in past)
+			it always checks its list. allow all inbound and outbound traffic.
+			it deny traffic from specific IP address.
+
+		Security group--> is a virtual firewall that controls inbound and outbound traffic for an Amazon EC2 instance or instance level.
+			By default, a security group denies all inbound traffic and allows all outbound traffic
+			It is stateful that means it remember its previous state
 
 DNS:
 	Route 53--> is a dns service
 		DNS resolution is the process of translating a domain name to an IP address.
 		Connect user requests to infrastructure in AWS and outside of AWS.
+		Services provided:
+			Domain registration
+			Health check monitoring
 
 
 Storage:
@@ -108,6 +151,7 @@ Storage:
 			S3 Infrequent Access (IA)--> Less frequent and rapid access of data. backup, disaster recovery files and long term files. Has minimum 3 AZ.
 			S3 1 zone IA--> Has 1 AZ only.
 			S3 Intelligent Teir--> Check the access pattern and move the data from S3 IA to S3 Standard and vice-versa.
+			S3 Intelligent-Tiering is the perfect storage class when you want to optimize storage costs for data that has unknown or changing access patterns.
 			S3 Glacier --> Less frequent and less rapid access of data. data archived in s3 glacier (inform of vault). We can access data from vault using vault lock policy. We can set policy in vault using WRITE ONCE READ MANY. Once policy locked can not changed. retrive objects from minutes to few hours.
 			S3 Life Cycle-->Here, we define configuration which will automatically move data. ex: s3 standard-90 days --> s3 IA-30 days--> s3 glacier - 120 days   
 			S3 Glacier deep Archive --> retrive of archived objects within 12 hour
@@ -116,17 +160,16 @@ Storage:
 			Storage level -->store files completely. every time there's a change to the object, you must re-upload the entire file and has no delta updates.
 			Block Level-->Store files in blocks. every time there's a change to the object, engine only updates the blocks where those bits live.
 
-	Amazon Elastic File System--> is a scalable file system used with AWS Cloud services and on-premises resources. As you add and remove files, Amazon EFS grows and shrinks automatically. It can scale on demand to petabytes without disrupting applications. 
+	Amazon Elastic File System-->
+		is a scalable file system used with AWS Cloud services and on-premises resources. As you add and remove files, Amazon EFS grows and shrinks automatically. It can scale on demand to petabytes (pb) without disrupting applications. 
 
 		EFS is regional service and available in multiple AZ.
-		AWS direct connect-->
-			- On-primses servers can access AWS EFS
-			- AWS Direct Connect is a service that enables you to establish a dedicated private connection between your data center and VPC without using public internet
+	
+	AWS direct connect-->
+		- On-primses servers can access AWS EFS
+		- AWS Direct Connect is a service that enables you to establish a dedicated private connection between your data center and VPC without using public internet
 
-
-
-
-The private connection that AWS Direct Connect provides helps you to reduce network costs and increase the amount of bandwidth that can travel through your network.
+		The private connection that AWS Direct Connect provides helps you to reduce network costs and increase the amount of bandwidth that can travel through your network.
 
 	RDS--> 
 		Amazon Aurora--> Its is an enterprise class relational db. It comes in two form MySQL and Postgresql.  If your workloads require high availability. It replicates six copies of your data across three Availability Zones and continuously backs up your data to Amazon S3.
@@ -138,7 +181,7 @@ The private connection that AWS Direct Connect provides helps you to reduce netw
 Security:
 	AWS Organization:
 		It can manage multiple aws account.
-		It support SCP (service Control Policy) where, it applied to root unser, individual and OU.
+		It support SCP (service Control Policy) where, it applied to root user, individual and OU.
 	AWS OU:
 		Same business and security requirements
 		whatevery access given to OU then same applies to child also.
@@ -157,14 +200,16 @@ Security:
     To overcome from DOS/DDOS, we use the AWS SHIELD:
     AWS Sheild:
     	- provides two level of protection
-    		Standard-->protect aws customer with no cost and detect malicious traffic and automatically migrate it.
-    		Advance-->its a paid service and provide detailed attack diagnostics and detect and mitigate.
-    			It integrate with Amazon CloudFront, Amazon Route 53, and Elastic Load Balancing. also with WAF by writing custom rule
+    		Standard-->
+    			protect aws customer with no cost and detect malicious traffic and automatically migrate it.
+    		Advance--
+    			its a paid service and provide detailed attack diagnostics and detect and mitigate.
+    			It integrate with Amazon CloudFront, Amazon Route 53, and Elastic Load Balancing, AWS Global Accelarator. also with WAF by writing custom rule
     AWS Key Management Service (AWS KMS)
     	- perform encryption operations through the use of cryptographic keys. A cryptographic key is a random string of digits. you can choose the specific levels of access control.
     AWS WAF:
     	- allow and block the traffic
-    	- works with AWS cloudfront and load balancer
+    	- works with AWS cloudfront and load balancer, api gateway and app sync
     	- offer protection from common web exploit at 7 layers
     AWS Inspector:
     	improve the security and compliance of applications by running automated security assessments
@@ -187,7 +232,10 @@ Monitoring and Analytics:
 
 	AWS Trusted Advisor:
 		It inspects your AWS environment and provides real-time recommendations in accordance with AWS best practices.
-		Best practices:
+
+		Analyze your infrastructure to identify unattached or underutilized EBS volumes
+		
+		Best practices of AWS trusted advisor:
 			cost optimization- includes checks for unused or idle resources that could be eliminated and provide cost savings.
 
 			performace- AWS Trusted Advisor also helps improve the performance of your services by providing recommendations for how to take advantage of provisioned throughput.
@@ -195,9 +243,10 @@ Monitoring and Analytics:
 			security- includes checks that help you to review your permissions and identify which AWS security features to enable.
 
 			fault tolerance- includes checks to help you improve your applications’ availability and redundancy.
+
 			service limit-
 
-The AWS Well-Architected Framework (WAF):
+The AWS Well Architected Framework (WAF):
 	It suggest how to design the system based oon five pillars:
 	Pillars:
 		Operational excellence -  the ability to run workloads effectively, gain insights into their operations, and continuously improve supporting processes to deliver business value
@@ -210,12 +259,35 @@ The AWS Well-Architected Framework (WAF):
 		cost optimization- 
 
 Six advantages of cloud computing:
-	Trade upfront expense for variable expense.
-	Benefit from massive economies of scale.
-	Stop guessing capacity.
-	Increase speed and agility.
-	Stop spending money running and maintaining data centers.
-	Go global in minutes.
+	Trade upfront expense for variable expense-
+		Upfront expenses include data centers, physical servers, and other resources that you would need to invest in before using computing resources
+		Paying for compute time as you use it instead of investing upfront costs in data centers
+
+	Benefit from massive economies of scale-
+		By using cloud computing, you can achieve a lower variable cost than you can get on your own. 
+
+		Because usage from hundreds of thousands of customers aggregates in the cloud, providers such as AWS can achieve higher economies of scale. Economies of scale translate into lower pay-as-you-go prices
+
+	Stop guessing capacity-
+		With cloud computing, you don’t have to predict how much infrastructure capacity you will need before deploying an application. 
+
+		For example, you can launch Amazon Elastic Compute Cloud (Amazon EC2) instances when needed and pay only for the compute time you use. Instead of paying for resources that are unused or dealing with limited capacity, you can access only the capacity that you need, and scale in or out in response to demand.
+
+		Scaling your infrastructure capacity in and out to meet demand
+
+	Increase speed and agility-
+		The flexibility of cloud computing makes it easier for you to develop and deploy applications.
+
+		This flexibility also provides your development teams with more time to experiment and innovate.
+
+	Stop spending money running and maintaining data centers-
+		Cloud computing in data centers often requires you to spend more money and time managing infrastructure and servers. 
+
+		A benefit of cloud computing is the ability to focus less on these tasks and more on your applications and customers.
+
+	Go global in minutes-
+		The AWS Cloud global footprint enables you to quickly deploy applications to customers around the world, while providing them with low latency.
+		Deploying an application in multiple Regions around the world: This process is an example of Go global in minutes
 
 Six Cloud Adoption Framework:
 	Business Perspective-->
@@ -237,10 +309,15 @@ Six Cloud Adoption Framework:
 
 Six Strategies for Migration:
 	Rehosting -->also known as “lift-and-shift” involves moving applications without changes
+
 	Replatforming --> also known as “lift, tinker, and shift,” involves making a few cloud optimizations to realize a tangible benefit. and without changing the core architecture of the application
+
 	Refactoring --> also known as re-architecting involves reimagining how an application is architected and developed by using cloud-native features
+
 	Repurchasing--> involves moving from a traditional license to a software-as-a-service model.
+	
 	Retaining --> consists of keeping applications that are critical for the business in the source environment
+	
 	Retiring--> is the process of removing applications that are no longer needed.
 
 AWS Snow Family members:
@@ -251,7 +328,8 @@ AWS Snow Family members:
 		AWS snowball:
 			Snowball Edge Storage Optimized devices--> are well suited for large-scale data migrations and recurring transfer workflows.
 
-				Storage: 80 TB of hard disk drive (HDD) capacity for block volumes and Amazon S3 compatible object storage, and 1 TB of SATA solid state drive (SSD) for block volumes. 
+				Storage: 80 TB of hard disk drive (HDD) capacity for block volumes and Amazon S3 compatible object storage, and 1 TB of SATA solid state drive (SSD) for block volumes.
+
 				Compute: 40 vCPUs, and 80 GiB of memory to support Amazon EC2 sbe1 instances (equivalent to C5).
 
 			Snowball Edge Compute Optimized --> provides powerful computing resources for use cases such as machine learning, full motion video analysis, analytics, and local computing stacks
@@ -268,14 +346,22 @@ AWS Snow Family members:
 
 Innovate with AWS Services
 	Artificial intelligence
+		TTS (text to speech) with polly
+		
 		Convert speech to text with Amazon Transcribe.
+
 		Discover patterns in text with Amazon Comprehend.
+
 		Identify potentially fraudulent online activities with Amazon Fraud Detector.
+
 		Build voice and text chatbots with Amazon Lex.
 
+
 	Machine learning (ML) development
-		is complex, expensive, time consuming, and error prone. AWS offers Amazon SageMaker to remove the difficult work from the process
+		is complex, expensive, time consuming, and error prone. AWS offers Amazon SageMaker to remove the difficult work from the process.
+
 		Amazon Textract is a machine learning service that automatically extracts text and data from scanned documents
+		
 		AWS DeepRacer is an autonomous 1/18 scale race car that you can use to test reinforcement learning models.
 
 	Amazon Augmented AI (Amazon A2I)
@@ -321,7 +407,8 @@ AWS billing and Cost management console:
 
 Consolidated billing:
 	consolidated billing feature of AWS Organizations enables you to receive a single bill for all AWS accounts in your organization.
-	the ability to share bulk discount pricing, Savings Plans, and Reserved Instances across the accounts in your organizatio
+
+	the ability to share bulk discount pricing, Savings Plans, and Reserved Instances across the accounts in your organization
 
 AWS Budgets:
 	you can create budgets to plan your service usage, service costs, and instance reservations.
@@ -339,11 +426,13 @@ AWS Support:
 	Basic-
 		- is free for all AWS customers. With Basic Support, you can also contact AWS for billing questions and service limit increases.
 		- With Basic Support, you have access to a limited selection of AWS Trusted Advisor checks. Additionally, you can use the AWS Personal Health Dashboard, a tool that provides alerts and remediation guidance when AWS is experiencing events that may affect you
+		-7 core trusted advisor check
 	
 	Developer-
 		Best practice guidance
 		Client-side diagnostic tools
 		Building-block architecture support, which consists of guidance for how to use AWS offerings, features, and services together
+		-7 core trusted advisor check
 
 	Business-
 		Use-case guidance to identify AWS offerings, features, and services that can best support your specific needs
@@ -365,8 +454,6 @@ AWS Marketplace:
 
 	Market place categories:
 		Infrastructure Products, Business Applications, Data Products, and DevOps.
-
-
 
 
 A service that monitors your applications and automatically adds or removes capacity from your resource groups in response to changing demand - This response option describes AWS Auto Scaling.
@@ -395,3 +482,257 @@ Amazon Quantum Ledger Database (Amazon QLDB) is a ledger database service. You c
 AWS compute optimizer:
 	recommends optimal AWS resource to reduce cost and improve workload performance
 
+OpsWorks - AWS OpsWorks is a configuration management service that provides managed instances of Chef and Puppet. OpsWorks lets you use Chef and Puppet to automate how servers are configured, deployed and managed across your Amazon EC2 instances or on-premises compute environments. You cannot use OpsWorks for collecting software inventory and viewing operational data from multiple AWS services.
+
+Config - AWS Config is a service that enables you to assess, audit, and evaluate the configurations of your AWS resources. Config continuously monitors and records your AWS resource configurations and allows you to automate the evaluation of recorded configurations against desired configurations. You cannot use Config for running commands or managing patches on servers.
+
+Systems Manager:
+	AWS Systems Manager gives you visibility and control of your infrastructure on AWS. Systems Manager provides a unified user interface so you can view operational data from multiple AWS services and allows you to automate operational tasks such as collecting software inventory, running commands, managing patches, and configuring servers across AWS Cloud as well as on-premises infrastructure.
+
+
+EC2 instance user data
+
+	EC2 instance user data is the data that you specified in the form of a bootstrap script or configuration parameters while launching your instance.
+
+	EC2 instance metadata and user data: 
+
+EC2 instance metadata - EC2 instance metadata is data about your instance that you can use to manage the instance. You can get instance items such as ami-id, public-hostname, local-hostname, hostname, public-ipv4, local-ipv4, public-keys, instance-id by using instance metadata. You cannot use EC2 instance metadata to run a bootstrap script while launching an EC2 instance. So this option is incorrect.
+
+EC2 instance configuration data
+
+EC2 instance AMI data
+
+There is no such thing as EC2 instance configuration data or EC2 instance AMI data. These options have been added as distractors.
+
+Use Spot Instances for ad-hoc jobs that can be interrupted
+
+A Spot Instance is an unused EC2 instance that is available for less than the On-Demand price. Because Spot Instances enable you to request unused EC2 instances at steep discounts (up to 90%), you can lower your Amazon EC2 costs significantly. Spot Instances are well-suited for data analysis, batch jobs, background processing, and optional tasks. These can be terminated at short notice, so these are not suitable for critical workloads that need to run at a specific point in time.
+
+
+
+
+
+Use On-Demand Instances to run applications with a predictable usage over the next one year
+
+Use On-Demand Instances for ad-hoc jobs that can be interrupted
+
+An On-Demand Instance is an instance that you use on-demand. You have full control over its lifecycle — you decide when to launch, stop, hibernate, start, reboot, or terminate it. There is no long-term commitment required when you purchase On-Demand Instances. There is no upfront payment and you pay only for the seconds that your On-Demand Instances are running. The price per second for running an On-Demand Instance is fixed. On-demand instances cannot be interrupted. However, On-demand instances are not as cost-effective as Spot instances or Reserved instances, so both these options are not correct.
+
+Use Reserved Instances for ad-hoc jobs that can be interrupted - Spot instances are more cost-effective than Reserved instances for running ad-hoc jobs that can be interrupted, so this option is not correct.
+
+AWS Transit Gateway
+
+AWS Transit Gateway connects VPCs and on-premises networks through a central hub. This simplifies your network and puts an end to complex peering relationships. It acts as a cloud router – each new connection is only made once. As you expand globally, inter-Region peering connects AWS Transit Gateways using the AWS global network. Your data is automatically encrypted and never travels over the public internet.
+
+AWS Direct Connect
+
+AWS Direct Connect is a cloud service solution that makes it easy to establish a dedicated network connection from your premises to AWS. Using AWS Direct Connect, you can establish private connectivity between AWS and your datacenter, office, or colocation environment, which in many cases can reduce your network costs, increase bandwidth throughput, and provide a more consistent network experience than Internet-based connections.
+
+Incorrect options:
+
+VPC Peering - A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them privately. VPC peering is not transitive, a separate VPC peering connection has to be made between two VPCs that need to talk to each other. With growing VPCs, this gets difficult to manage.
+
+Internet Gateway - An internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between instances in your VPC and the internet. It, therefore, imposes no availability risks or bandwidth constraints on your network traffic. You cannot use Internet Gateway to connect your on-premises data center with multiple VPCs within your AWS network.
+
+AWS Storage Gateway - AWS Storage Gateway is a hybrid cloud storage service that gives you on-premises access to virtually unlimited cloud storage. All data transferred between the gateway and AWS storage is encrypted using SSL (for all three types of gateways - File, Volume and Tape Gateways). You cannot use Storage Gateway to connect your on-premises data center with multiple VPCs within your AWS network.
+
+Amazon Relational Database Service (Amazon RDS)
+
+A Reserved Instance is a reservation that provides a discounted hourly rate in exchange for an upfront fee and term contract. Services such as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Relational Database Service (Amazon RDS) use this approach to sell reserved capacity for hourly use of Reserved Instances. It is not a virtual machine. It is a commitment to pay in advance for specific Amazon EC2 or Amazon RDS instances.
+
+Incorrect options:
+
+Amazon CloudFront - Amazon CloudFront is a content delivery network (CDN) service. CloudFront does not offer "Reserved Capacity" pricing.
+
+Amazon Simple Storage Service (Amazon S3) - Amazon S3 infrastructure is managed by AWS. So, Reserved Instance does not make sense here. But, S3 offers volume discounts for its storage classes.
+
+AWS Identity & Access Management (IAM) - AWS Identity and Access Management (IAM) enables you to manage access to AWS services and resources securely. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. This is a free service to every AWS customer.
+
+AWS WAF is a web application firewall that helps protect your web applications or APIs against common web exploits that may affect availability, compromise security, or consume excessive resources. AWS WAF gives you control over how traffic reaches your applications by enabling you to create security rules that block common attack patterns such as SQL injection or cross-site scripting. You can also use rate-based rules to mitigate the Web layer DDoS attack.
+
+WAF can block all requests except the ones that you allow - WAF can block all requests except the ones that you allow. This is useful when you want to serve content for a restricted website whose users are readily identifiable by properties in web requests, such as the IP addresses that they use to browse to the website.
+
+WAF can check for the presence of SQL code that is likely to be malicious (known as SQL injection) - WAF offers additional protection against web attacks using conditions that you specify. You can define conditions by using characteristics of web requests such as - IP addresses that requests originate from, presence of a script that is likely to be malicious (known as cross-site scripting), presence of SQL code that is likely to be malicious (known as SQL injection) and many more.
+
+Incorrect options:
+
+WAF offers protection against all known infrastructure (Layer 3 and 4) attacks - WAF lets you monitor the HTTP and HTTPS requests to your application, it only works at the application layer (layer 7).
+
+WAF offers dedicated support from the DDoS Response Team (DRT) and advanced reporting - As AWS Shield Advanced customer can contact a 24x7 DDoS response team (DRT) for assistance during a DDoS attack, it is a feature of Shield Advanced, and not of WAF.
+
+AWS WAF lets you monitor the HTTP and HTTPS requests that are forwarded to Amazon Route 53 - AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS requests that are forwarded to an Amazon API Gateway API, Amazon CloudFront or an Application Load Balancer. It does not cover Amazon Route 53, which is a Domain Name System (DNS) web service.
+
+Warm Standby strategy
+
+When selecting your DR strategy, you must weigh the benefits of lower RTO (recovery time objective) and RPO (recovery point objective) vs the costs of implementing and operating a strategy. The pilot light and warm standby strategies both offer a good balance of benefits and cost.
+
+This strategy replicates data from the primary Region to data resources in the recovery Region, such as Amazon Relational Database Service (Amazon RDS) DB instances or Amazon DynamoDB tables. These data resources are ready to serve requests. In addition to replication, this strategy requires you to create a continuous backup in the recovery Region. This is because when "human action" type disasters occur, data can be deleted or corrupted, and replication will replicate the bad data. Backups are necessary to enable you to get back to the last known good state.
+
+The warm standby strategy deploys a functional stack, but at reduced capacity. The DR endpoint can handle requests, but cannot handle production levels of traffic. It may be more, but is always less than the full production deployment for cost savings. If the passive stack is deployed to the recovery Region at full capacity, however, then this strategy is known as “hot standby.” Because warm standby deploys a functional stack to the recovery Region, this makes it easier to test Region readiness using synthetic transactions.
+
+Multi-site active-active strategy - This strategy uses AWS Regions as your active sites, creating a multi-Region active/active architecture. Generally, two Regions are used. Each Region hosts a highly available, multi-Availability Zone (AZ) workload stack. In each Region, data is replicated live between the data stores and also backed up. This protects against disasters that include data deletion or corruption since the data backup can be restored to the last known good state. Each regional stack serves production traffic effectively. But, this strategy is cost involving and should only be used for mission-critical applications.
+
+Pilot Light strategy - Pilot Light, like Warm Standby strategy, replicates data from the primary Region to data resources in the recovery Region, such as Amazon Relational Database Service (Amazon RDS) DB instances or Amazon DynamoDB tables. But, the DR Region in a pilot light strategy (unlike warm standby) cannot serve requests until additional steps are taken. A pilot light in a home furnace does not provide heat to the home. It provides a quick way to light the furnace burners that then provide heat.
+
+Warm standby can handle traffic at reduced levels immediately. Pilot light requires you to first deploy infrastructure and then scale out resources before the workload can handle requests.
+
+Backup & Restore strategy - Backup and Restore is associated with higher RTO (recovery time objective) and RPO (recovery point objective). This results in longer downtimes and greater loss of data between when the disaster event occurs and recovery. However, backup and restore can still be the right strategy for workloads because it is the easiest and least expensive strategy to implement.
+
+AWS Shield Standard
+
+AWS Shield is a managed service that protects against Distributed Denial of Service (DDoS) attacks for applications running on AWS. AWS Shield Standard is enabled for all AWS customers at no additional cost. AWS Shield Standard automatically protects your web applications running on AWS against the most common, frequently occurring DDoS attacks. You can get the full benefits of AWS Shield Standard by following the best practices of DDoS resiliency on AWS. As Shield Standard is automatically activated for all AWS customers with no options for any customizations, therefore AWS needs to manage the maintenance and configurations for this service. Hence this service falls under the purview of AWS.
+
+
+AWS Web Application Firewall (WAF) - AWS WAF is a web application firewall that lets you monitor the HTTP and HTTPS requests that are forwarded to an Amazon API Gateway API, Amazon CloudFront or an Application Load Balancer. AWS WAF also lets you control access to your content. AWS WAF has to be enabled by the customer and comes under the customer's responsibility.
+
+AWS Shield Advanced - For higher levels of protection against attacks, you can subscribe to AWS Shield Advanced. As an AWS Shield Advanced customer, you can contact a 24x7 DDoS response team (DRT) for assistance during a DDoS attack. You also have exclusive access to advanced, real-time metrics and reports for extensive visibility into attacks on your AWS resources. Customers need to subscribe to Shield Advanced and need to pay for this service. It falls under customer responsibility per the AWS Shared Responsibility Model.
+
+Security Groups for Amazon EC2 - A Security Group acts as a virtual firewall for the EC2 instance to control incoming and outgoing traffic. Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. Security groups are the responsibility of the customer.
+
+S3 is a key value based object storage service
+
+S3 stores data in a flat non-hierarchical structure
+
+Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance. S3 stores data in a flat non-hierarchical structure. All objects are stored in S3 buckets and can be organized with shared names called prefixes. You can also append up to 10 key-value pairs called S3 object tags to each object, which can be created, updated, and deleted throughout an object’s lifecycle.
+
+S3 is a block storage service designed for a broad range of workloads - Block storage service is provided by Amazon Elastic Block Store (EBS) to provide persistent block-level storage volumes for use with Amazon EC2 instances. S3 is an object storage service.
+
+S3 is a fully managed, elastic file system storage service used as database backup - Amazon Elastic File System (Amazon EFS) provides a simple, scalable, fully managed elastic NFS file system for use with AWS Cloud services and on-premises resources. S3 is an object storage service.
+
+You can install databases on S3 - S3 is an object storage service. You cannot install databases on S3.
+
+S3 Transfer Acceleration
+
+Amazon S3 Transfer Acceleration (S3TA) enables fast, easy, and secure transfers of files over long distances between your client and your Amazon S3 bucket. S3 Transfer Acceleration leverages Amazon CloudFront’s globally distributed AWS Edge Locations. As data arrives at an AWS Edge Location, data is routed to your Amazon S3 bucket over an optimized network path. S3 Transfer Acceleration is designed to optimize transfer speeds from across the world into S3 buckets. If you are uploading to a centralized bucket from geographically dispersed locations, or if you regularly transfer GBs or TBs of data across continents, you may save hours or days of data transfer time with S3 Transfer Acceleration.
+
+Amazon CloudFront - Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency, high transfer speeds, all within a developer-friendly environment. CloudFront is used for content delivery than for data uploads. CloudFront caches data and a subsequent request for a webpage will not go to the origin server, but will be served from the cache. S3 Transfer Acceleration is a better option for the given use-case.
+
+AWS Direct Connect - AWS Direct Connect is a cloud service solution that makes it easy to establish a dedicated network connection from your premises to AWS. You can use AWS Direct Connect to establish a private virtual interface from your on-premise network directly to your Amazon VPC. This private connection takes at least one month for completion. You cannot use Direct Connect to optimize media uploads into S3.
+
+AWS Global Accelerator - AWS Global Accelerator is a service that improves the availability and performance of your applications with local or global users. It provides static IP addresses that act as a fixed entry point to your application endpoints in a single or multiple AWS Regions, such as your Application Load Balancers, Network Load Balancers or Amazon EC2 instances. Similar to CloudFront it uses AWS Global network and edge locations for enhanced performance. It's an overall performance enhancer than an upload speed accelerator. You cannot use Global Accelerator to optimize media uploads into S3.
+
+You can use Read Replicas for both improved read performance as well as Disaster Recovery
+
+Amazon Relational Database Service (Amazon RDS) makes it easy to set up, operate, and scale a relational database in the cloud. Read Replicas allow you to create read-only copies that are synchronized with your master database. Read Replicas are used for improved read performance. You can also place your read replica in a different AWS Region closer to your users for better performance. Using a cross-Region Read Replica can also help ensure that you get back up and running if you experience a regional availability issue in case of a disaster. Read Replicas are an example of horizontal scaling of resources.
+
+Amazon RDS Multi-AZ deployments provide enhanced availability and durability for RDS database (DB) instances, making them a natural fit for production database workloads. When you provision a Multi-AZ DB Instance, Amazon RDS automatically creates a primary DB Instance and synchronously replicates the data to a standby instance in a different Availability Zone (AZ). Amazon RDS performs an automatic failover to the standby so that you can resume database operations as soon as the failover is complete. Since the endpoint for your DB Instance remains the same after a failover, your application can resume database operation without the need for manual administrative intervention. Think of multi-AZ as enhancing the availability and reliability of your system, however, by itself, multi-AZ cannot be used for disaster recovery.
+
+
+You can use Read Replicas for improved read performance and Multi-AZ for Disaster Recovery
+
+You can use both Read Replicas and Multi-AZ for improved read performance
+
+You can use Read Replicas for Disaster Recovery and Multi-AZ for improved read performance
+
+AWS Pricing Calculator
+
+AWS Pricing Calculator lets you explore AWS services and create an estimate for the cost of your use cases on AWS. You can model your solutions before building them, explore the price points and calculations behind your estimate, and find the available instance types and contract terms that meet your needs. This enables you to make informed decisions about using AWS. You can plan your AWS costs and usage or price out setting up a new set of instances and services. AWS Pricing Calculator can be accessed at https://calculator.aws/#/.
+
+AWS also offers a complimentary service called Migration Evaluator (Formerly TSO Logic) to create data-driven business cases for AWS Cloud planning and migration.
+
+AWS Trusted Advisor - AWS Trusted Advisor provides recommendations that help you follow AWS best practices. Trusted Advisor evaluates your account by using checks. These checks identify ways to optimize your AWS infrastructure, improve security and performance, reduce costs, and monitor service quotas. This service cannot be used to compare the cost of running the IT infrastructure on-premises vs AWS Cloud.
+
+AWS Cost Explorer - AWS Cost Explorer has an easy-to-use interface that lets you visualize, understand, and manage your AWS costs and usage over time. AWS Cost Explorer includes a default report that helps you visualize the costs and usage associated with your top five cost-accruing AWS services, and gives you a detailed breakdown of all services in the table view. The reports let you adjust the time range to view historical data going back up to twelve months to gain an understanding of your cost trends. AWS Cost Explorer cannot be used to compare the cost of running the IT infrastructure on-premises vs AWS Cloud.
+
+AWS Budgets - AWS Budgets gives the ability to set custom budgets that alert you when your costs or usage exceed (or are forecasted to exceed) your budgeted amount. You can also use AWS Budgets to set reservation utilization or coverage targets and receive alerts when your utilization drops below the threshold you define. Budgets can be created at the monthly, quarterly, or yearly level, and you can customize the start and end dates. You can further refine your budget to track costs associated with multiple dimensions, such as AWS service, linked account, tag, and others. AWS Budgets cannot be used to compare the cost of running the IT infrastructure on-premises vs AWS Cloud.
+
+AWS Trusted Advisor can provide alerts on which of the following common security misconfigurations?
+	When you allow public access to Amazon S3 buckets
+
+	When you don't turn on user activity logging (AWS CloudTrail)
+
+	AWS Trusted Advisor is an online tool that provides real-time guidance to help provision your resources following AWS best practices. Whether establishing new workflows, developing applications, or as part of ongoing improvement, recommendations provided by Trusted Advisor regularly help keep your solutions provisioned optimally. AWS Trusted Advisor analyzes your AWS environment and provides best practice recommendations in five categories: Cost Optimization, Performance, Security, Fault Tolerance, Service Limits.
+
+	Trusted Advisor inspects your AWS environment and makes recommendations when opportunities may exist to save money, improve system performance, or close security gaps. It provides alerts on several of the most common security misconfigurations that can occur, including leaving certain ports open that make you vulnerable to hacking and unauthorized access, neglecting to create IAM accounts for your internal users, allowing public access to Amazon S3 buckets, not turning on user activity logging (AWS CloudTrail), or not using MFA on your root AWS Account.
+
+When you don't tag objects in S3 buckets - Tagging objects (or any resource) in S3 is not mandatory and it's not a security threat.
+
+"When you share IAM user credentials with others" - It is the customer's responsibility to adhere to the IAM security best practices and never share the IAM user credentials with others. Trusted Advisor cannot send an alert for such use-cases.
+
+When you don't enable data encryption on S3 Glacier - By default, data on S3 Glacier is encrypted. So, this option has been added as a distractor.
+
+AWS Organizations provides which of the following benefits?
+	Volume discounts for Amazon EC2 and Amazon S3 aggregated across the member AWS accounts
+
+	Share the reserved EC2 instances amongst the member AWS accounts
+
+	AWS Organizations helps you to centrally manage billing; control access, compliance, and security; and share resources such as reserved EC2 instances across your AWS accounts.
+
+	Using AWS Organizations, you can automate account creation, create groups of accounts to reflect your business needs, and apply policies for these groups for governance. You can also simplify billing by setting up a single payment method for all of your AWS accounts. AWS Organizations is available to all AWS customers at no additional charge.
+
+	You can use AWS Organizations to set up a single payment method for all the AWS accounts in your organization through consolidated billing. With consolidated billing, you can see a combined view of charges incurred by all your accounts, as well as take advantage of pricing benefits from aggregated usage, such as volume discounts for Amazon EC2 and Amazon S3.
+
+CORRECT regarding AWS Global Accelerator
+	Global Accelerator is a good fit for non-HTTP use cases - Global Accelerator is a good fit for non-HTTP use cases, such as gaming (UDP), IoT (MQTT), or Voice over IP, as well as for HTTP use cases that specifically require static IP addresses or deterministic, fast regional failover.
+
+	Global Accelerator provides static IP addresses that act as a fixed entry point to your applications - It provides static IP addresses that provide a fixed entry point to your applications and eliminate the complexity of managing specific IP addresses for different AWS Regions and Availability Zones.
+
+According to the AWS Shared Responsibility Model, which of the following are responsibilities of the customer for IAM?
+	Enable MFA on all accounts
+
+	Analyze user access patterns and review IAM permissions
+
+	Under the AWS Shared Responsibility Model, customers are responsible for enabling MFA on all accounts, analyzing access patterns and reviewing permissions.
+
+	---------------------Responsibility for AWS-----------
+	- Network operatibility/ router
+	- data center security
+	- network switch
+	- server
+	- storage
+	- disk drive
+	- databaser server
+
+	--------------------Responsibility for Customer---------
+	- Firewall and networking configuration in EC2
+	- staff training
+	- data encryption
+	- buckets with objects
+	- role
+	- IAM user
+	- Multi Factor Authentication (MAF)
+	- Network ACL
+	- Security Group
+	- SSL encrytion
+	- Patch management
+	- EC2 isntance
+	- Auto scaling
+	- Elastic load balance
+
+
+Best practice for archietecting for cloud:
+-Automation
+
+Type of Montinoring for AWS Cloudwatch:
+- Application Performance
+- Resource utilization
+
+Quick deploy popular technology on AWS:
+-Quick start reference
+
+Keep sensative data in its own data center due to compliance but still like to deploy resources using AWS:
+-Hybrid
+
+Amazaon CodeGuru-
+	Is a developer tool that provide intelligent recommendations to improve code quality and identify most expensive line of code.
+
+AWS DATASYNC-
+	is a secure online data transfer service that simplify, automates and accelerate copying tb of data to and from aws storage service.
+
+Audit request made to s2 bucket:
+- Access log(Provide detailed log for request that are made to bucket)
+
+AWS EBS- It is a Paas service which allows you to deploy and scale web application service.
+
+AWS LightSail-
+	is designed to be easiest way to launch and manage a VPS with aws and with low monthly pricing. It is great for people with little cloud experience to launch quickly a popular IT solution ready to use immediately.
+
+IAM Security Tools allows you to review permission grantd to user:
+- IAM Access Advisor
+
+Type of nosql database:
+	-Dynamo DB
+	-Document DB
+	-Neptune
+	-Amazon MemoryDB for Redis 
+	-Amazon Elasticsearch Service (Amazon ES)
