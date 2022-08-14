@@ -75,6 +75,7 @@ Region:-->geographical area that contains AWS resources.
 
 		AWS CloudFormation allows you to use programming languages or a simple text file to model and provision, in an automated and secure manner, all the resources needed for your applications across all Regions and accounts. Think infrastructure as code; think CloudFormation. You cannot use CloudFormation for running commands or managing patches on servers. 
 
+		provision the same AWS infrastructure across multiple AWS accounts and regions
 
 AWS resources:
 	AWS Elastic Beanstalk-->provide code and configure. Free services
@@ -139,6 +140,8 @@ DNS:
 
 Storage:
 	Instance store volume-->temporary block level storage. Which store data temporary when ec2 stop/terminate. all data gets deleted.
+		caching capabilities for its scientific computations
+
 	EBS- To overcome from Instance store volumne and if you dont want to delete entire db on stopping of ec2 instance. Then EBS comes in picture.
 		EBS Volume --> it ia virtual hard drive. provide the backup called snapshots.
 		EBS snapshot --> is an incremental backup
@@ -146,6 +149,8 @@ Storage:
 		EBS and EC2 instance both are in same AZ.
 
 	S3-->allow to store and retrive unlimited amount of data at any scale 
+		copy data across different Availability Zones
+
 		s3 storage classes:
 			S3 Standard--> Frequent and rapid access of data. Hosting static website (html, css, js)
 			S3 Infrequent Access (IA)--> Less frequent and rapid access of data. backup, disaster recovery files and long term files. Has minimum 3 AZ.
@@ -163,7 +168,10 @@ Storage:
 	Amazon Elastic File System-->
 		is a scalable file system used with AWS Cloud services and on-premises resources. As you add and remove files, Amazon EFS grows and shrinks automatically. It can scale on demand to petabytes (pb) without disrupting applications. 
 
-		EFS is regional service and available in multiple AZ.
+		EFS is regional service and available in multiple AZ, VPC, regions
+
+		paid for read and write.
+
 	
 	AWS direct connect-->
 		- On-primses servers can access AWS EFS
@@ -204,13 +212,15 @@ Security:
     			protect aws customer with no cost and detect malicious traffic and automatically migrate it.
     		Advance--
     			its a paid service and provide detailed attack diagnostics and detect and mitigate.
-    			It integrate with Amazon CloudFront, Amazon Route 53, and Elastic Load Balancing, AWS Global Accelarator. also with WAF by writing custom rule
+    			It integrate with Amazon CloudFront, EC2, Amazon Route 53, and Elastic Load Balancing, AWS Global Accelarator. also with WAF by writing custom rule
     AWS Key Management Service (AWS KMS)
     	- perform encryption operations through the use of cryptographic keys. A cryptographic key is a random string of digits. you can choose the specific levels of access control.
     AWS WAF:
     	- allow and block the traffic
     	- works with AWS cloudfront and load balancer, api gateway and app sync
     	- offer protection from common web exploit at 7 layers
+    	- protection fro SQL injection
+    	- WAF can block all requests except the ones that you allow
     AWS Inspector:
     	improve the security and compliance of applications by running automated security assessments
     	provide the suggestion by severity level and tell us how to fix it
@@ -219,10 +229,11 @@ Security:
     	If GuardDuty detects any threats, you can review detailed findings about them from the AWS Management Console
 
 Monitoring and Analytics:
-	AWS Cloud Watch:
+	AWS Cloudwatch:
 		- Based on metric it collects the data point resouces and graph them (create the dashboard),
 		- Monitor and manage the application
 		- It also send notification using cloud watch alarm
+		- logs for both ec2 instance and on-premise server 
 
 	CloudTrail:
 		Logs of actions, where all information are recorded about the application/services.
@@ -250,6 +261,9 @@ The AWS Well Architected Framework (WAF):
 	It suggest how to design the system based oon five pillars:
 	Pillars:
 		Operational excellence -  the ability to run workloads effectively, gain insights into their operations, and continuously improve supporting processes to deliver business value
+			Anticipate failure
+			make frequent, small, reversible changes
+			infrastructure as a code.
 
 		Security-  on protecting data, systems, and assets. It also focuses on using cloud technologies to improve the security of your workloads.
 
@@ -332,6 +346,8 @@ AWS Snow Family members:
 
 				Compute: 40 vCPUs, and 80 GiB of memory to support Amazon EC2 sbe1 instances (equivalent to C5).
 
+				EC2 support sbowball
+
 			Snowball Edge Compute Optimized --> provides powerful computing resources for use cases such as machine learning, full motion video analysis, analytics, and local computing stacks
 
 				Storage: 42-TB usable HDD capacity for Amazon S3 compatible object storage or Amazon EBS compatible block volumes and 7.68 TB of usable NVMe SSD capacity for Amazon EBS compatible block volumes. 
@@ -385,8 +401,9 @@ AWS Lambda:
  	AWS Lambda allows 1 million free requests and up to 3.2 million seconds of compute time per month.
 
 Amazon EC2:
-	With Amazon EC2, you pay for only the compute time that you use while your instances are running.
-	Spot Instance would provide you with up to 90% cost savings while still meeting the availability requirements of your workload.
+	- With Amazon EC2, you pay for only the compute time that you use while your instances are running.
+	- Spot Instance would provide you with up to 90% cost savings while still meeting the availability requirements of your workload.
+	- Can be interruptted
 
 Amazon S3:
 	Storage - You pay for only the storage that you use. You are charged the rate to store objects in your Amazon S3 buckets based on your objects’ sizes, storage classes, and how long you have stored each object during the month.
@@ -416,6 +433,11 @@ AWS Budgets:
 	The information in AWS Budgets updates three times a day. This helps you to accurately determine how close your usage is to your budgeted amounts or to the AWS Free Tier limits.
 
 	In AWS Budgets, you can also set custom alerts when your usage exceeds (or is forecasted to exceed) the budgeted amount.
+
+	budget type:
+		- Cost budget
+		- Usage budget
+		- reservation budget
 
 AWS Cost Explorer:
 	AWS Cost Explorer is a tool that enables you to visualize, understand, and manage your AWS costs and usage over time.
@@ -484,9 +506,9 @@ AWS compute optimizer:
 
 OpsWorks - AWS OpsWorks is a configuration management service that provides managed instances of Chef and Puppet. OpsWorks lets you use Chef and Puppet to automate how servers are configured, deployed and managed across your Amazon EC2 instances or on-premises compute environments. You cannot use OpsWorks for collecting software inventory and viewing operational data from multiple AWS services.
 
-Config - AWS Config is a service that enables you to assess, audit, and evaluate the configurations of your AWS resources. Config continuously monitors and records your AWS resource configurations and allows you to automate the evaluation of recorded configurations against desired configurations. You cannot use Config for running commands or managing patches on servers.
+AWS Config: - AWS Config is a service that enables you to assess, audit, and evaluate the configurations of your AWS resources. Config continuously monitors and records your AWS resource configurations and allows you to automate the evaluation of recorded configurations against desired configurations. You cannot use Config for running commands or managing patches on servers.
 
-Systems Manager:
+system manager / Systems Manager:
 	AWS Systems Manager gives you visibility and control of your infrastructure on AWS. Systems Manager provides a unified user interface so you can view operational data from multiple AWS services and allows you to automate operational tasks such as collecting software inventory, running commands, managing patches, and configuring servers across AWS Cloud as well as on-premises infrastructure.
 
 
@@ -520,9 +542,11 @@ An On-Demand Instance is an instance that you use on-demand. You have full contr
 
 Use Reserved Instances for ad-hoc jobs that can be interrupted - Spot instances are more cost-effective than Reserved instances for running ad-hoc jobs that can be interrupted, so this option is not correct.
 
-AWS Transit Gateway
+AWS Transit Gateway:
 
-AWS Transit Gateway connects VPCs and on-premises networks through a central hub. This simplifies your network and puts an end to complex peering relationships. It acts as a cloud router – each new connection is only made once. As you expand globally, inter-Region peering connects AWS Transit Gateways using the AWS global network. Your data is automatically encrypted and never travels over the public internet.
+	- AWS Transit Gateway connects VPCs and on-premises networks through a central hub. This simplifies your network and puts an end to complex peering relationships. It acts as a cloud router – each new connection is only made once. As you expand globally, inter-Region peering connects AWS Transit Gateways using the AWS global network. Your data is automatically encrypted and never travels over the public internet.
+
+	- connect all VPCs for better departmental collaboration
 
 AWS Direct Connect
 
@@ -572,11 +596,13 @@ The warm standby strategy deploys a functional stack, but at reduced capacity. T
 
 Multi-site active-active strategy - This strategy uses AWS Regions as your active sites, creating a multi-Region active/active architecture. Generally, two Regions are used. Each Region hosts a highly available, multi-Availability Zone (AZ) workload stack. In each Region, data is replicated live between the data stores and also backed up. This protects against disasters that include data deletion or corruption since the data backup can be restored to the last known good state. Each regional stack serves production traffic effectively. But, this strategy is cost involving and should only be used for mission-critical applications.
 
-Pilot Light strategy - Pilot Light, like Warm Standby strategy, replicates data from the primary Region to data resources in the recovery Region, such as Amazon Relational Database Service (Amazon RDS) DB instances or Amazon DynamoDB tables. But, the DR Region in a pilot light strategy (unlike warm standby) cannot serve requests until additional steps are taken. A pilot light in a home furnace does not provide heat to the home. It provides a quick way to light the furnace burners that then provide heat.
+Pilot Light strategy:
+	- Pilot Light, like Warm Standby strategy, replicates data from the primary Region to data resources in the recovery Region, such as Amazon Relational Database Service (Amazon RDS) DB instances or Amazon DynamoDB tables. But, the DR Region in a pilot light strategy (unlike warm standby) cannot serve requests until additional steps are taken. A pilot light in a home furnace does not provide heat to the home. It provides a quick way to light the furnace burners that then provide heat.
 
 Warm standby can handle traffic at reduced levels immediately. Pilot light requires you to first deploy infrastructure and then scale out resources before the workload can handle requests.
 
-Backup & Restore strategy - Backup and Restore is associated with higher RTO (recovery time objective) and RPO (recovery point objective). This results in longer downtimes and greater loss of data between when the disaster event occurs and recovery. However, backup and restore can still be the right strategy for workloads because it is the easiest and least expensive strategy to implement.
+Backup & Restore strategy:
+	Backup and Restore is associated with higher RTO (recovery time objective) and RPO (recovery point objective). This results in longer downtimes and greater loss of data between when the disaster event occurs and recovery. However, backup and restore can still be the right strategy for workloads because it is the easiest and least expensive strategy to implement.
 
 AWS Shield Standard
 
@@ -662,7 +688,7 @@ AWS Organizations provides which of the following benefits?
 
 	You can use AWS Organizations to set up a single payment method for all the AWS accounts in your organization through consolidated billing. With consolidated billing, you can see a combined view of charges incurred by all your accounts, as well as take advantage of pricing benefits from aggregated usage, such as volume discounts for Amazon EC2 and Amazon S3.
 
-CORRECT regarding AWS Global Accelerator
+AWS Global Accelerator
 	Global Accelerator is a good fit for non-HTTP use cases - Global Accelerator is a good fit for non-HTTP use cases, such as gaming (UDP), IoT (MQTT), or Voice over IP, as well as for HTTP use cases that specifically require static IP addresses or deterministic, fast regional failover.
 
 	Global Accelerator provides static IP addresses that act as a fixed entry point to your applications - It provides static IP addresses that provide a fixed entry point to your applications and eliminate the complexity of managing specific IP addresses for different AWS Regions and Availability Zones.
@@ -674,6 +700,13 @@ According to the AWS Shared Responsibility Model, which of the following are res
 
 	Under the AWS Shared Responsibility Model, customers are responsible for enabling MFA on all accounts, analyzing access patterns and reviewing permissions.
 
+	---------------------Responsibility for both-----------
+	- configuration management
+	- AWS is responsible for Security "of" the Cloud
+	- Customer is responsible for Security "in" the Cloud
+	- For abstracted services like Amazon S3, AWS operates the infrastructure layer, the operating system, and platforms
+
+	
 	---------------------Responsibility for AWS-----------
 	- Network operatibility/ router
 	- data center security
@@ -682,6 +715,7 @@ According to the AWS Shared Responsibility Model, which of the following are res
 	- storage
 	- disk drive
 	- databaser server
+	- Patching networking infrastructure
 
 	--------------------Responsibility for Customer---------
 	- Firewall and networking configuration in EC2
@@ -698,14 +732,17 @@ According to the AWS Shared Responsibility Model, which of the following are res
 	- EC2 isntance
 	- Auto scaling
 	- Elastic load balance
+	- Customer data (aws managed service)
+	- maintain version of lambda function
 
 
-Best practice for archietecting for cloud:
+Best practice for architecting for cloud:
 -Automation
 
 Type of Montinoring for AWS Cloudwatch:
 - Application Performance
 - Resource utilization
+
 
 Quick deploy popular technology on AWS:
 -Quick start reference
@@ -719,7 +756,7 @@ Amazaon CodeGuru-
 AWS DATASYNC-
 	is a secure online data transfer service that simplify, automates and accelerate copying tb of data to and from aws storage service.
 
-Audit request made to s2 bucket:
+Audit request made to s3 bucket:
 - Access log(Provide detailed log for request that are made to bucket)
 
 AWS EBS- It is a Paas service which allows you to deploy and scale web application service.
@@ -733,6 +770,158 @@ IAM Security Tools allows you to review permission grantd to user:
 Type of nosql database:
 	-Dynamo DB
 	-Document DB
-	-Neptune
+	-Neptune-->graph db
 	-Amazon MemoryDB for Redis 
 	-Amazon Elasticsearch Service (Amazon ES)
+
+
+S3 Access Logs
+
+Server access logging provides detailed records for the requests that are made to a bucket. Server access logs are useful for many applications. For example, access log information can be useful in security and access audits.
+
+It can also help you learn about your customer base and understand your Amazon S3 bill.
+
+pay per second - When running a Windows EC2 on-demand instance,  pricing is applied.
+Pay per hour - Windows based EC2 instances used to follow pay-per-hour pricing earlier.
+
+
+Amazon Cognito
+
+Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily. With Amazon Cognito, you also have the option to authenticate users through social identity providers such as Facebook, Twitter, or Amazon, with SAML identity solutions, or by using your own identity system.
+
+
+Adding more CPU/RAM to an Amazon EC2 instance represents which of the following?
+	Vertical
+
+
+Charge for Elastic Block Store (EBS) volumes
+	Volume type
+	Provisioned IOPS
+
+
+AWS Glue:
+	- It is serverless service that allow you to prepare data for analytics.
+	- AWS Glue is a fully managed extract, transform, and load (ETL) service that makes it easy for customers to prepare and load their data for analytics.
+	- AWS Glue job is meant to be used for batch ETL data processing.
+
+Review permissions granted to a user
+	IAM Acess Advisor
+
+
+NOT a feature of Amazon Inspector
+	Track configuration charge
+
+Amazon Macie:
+	Amazon Macie is a fully managed data security and data privacy service that uses machine learning and pattern matching to discover and protect your sensitive data in AWS.
+
+	Amazon Macie uses machine learning and pattern matching to cost-efficiently discover sensitive data at scale.
+	Macie automatically detects a large and growing list of sensitive data types, including personally identifiable information (PII) such as names, addresses, and credit card numbers. It also gives you constant visibility of the data security and data privacy of your data stored in Amazon S3.
+
+AWS Secrets Manager:
+	AWS Secrets Manager helps you protect secrets needed to access your applications, services, and IT resources. The service enables you to easily rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their lifecycle. It is not used to discover and protect sensitive data in AWS.
+
+
+RDS database in a Read Replica configuration?
+	Read Replica improves database scalability
+
+
+AWS Personal Health Dashboard
+
+	AWS Personal Health Dashboard provides alerts and remediation guidance when AWS is experiencing events that may impact you. While the Service Health Dashboard displays the general status of AWS services, Personal Health Dashboard gives you a personalized view of the performance and availability of the AWS services underlying your AWS resources. The dashboard displays relevant and timely information to help you manage events in progress, and provides proactive notification to help you plan for scheduled activities. With Personal Health Dashboard, alerts are triggered by changes in the health of AWS resources, giving you event visibility, and guidance to help quickly diagnose and resolve issues. For example, in the event of an AWS hardware failure impacting one of your EBS volumes, you will get an alert that includes a list of your affected resources, a recommendation to restore your volume, and links to the steps to help you restore it from a snapshot.
+
+A financial services enterprise plans to enable Multi-Factor Authentication (MFA) for its employees. For ease of travel, they prefer not to use any physical devices to implement MFA?
+	Virtual MFA
+
+Components of an AWS Site-to-Site VPN
+	Customer gateway
+	virtual private gateway
+
+AWS Route 53 routing policy would you use when you want to route your traffic in an active-passive configuration
+	Failover routing policy
+
+Data encryption is automatically enabled
+	S3 glacier
+	AWS storage gateway
+
+Penetration Testing
+
+	AWS customers can carry out security assessments or penetration tests against their AWS infrastructure without prior approval for few common AWS services. Customers are not permitted to conduct any security assessments of AWS infrastructure, or the AWS services themselves.
+
+AWS Identity and Access Management (IAM) policies are written as JSON documents. Which of the following are mandatory elements of an IAM policy?
+	Effect, Action
+
+
+Use Cross-Region replication (CRR) to replicate data between distant AWS Regions?
+	- Replication enables automatic, asynchronous copying of objects across Amazon S3 buckets. Buckets that are configured for object replication can be owned by the same AWS account or by different accounts. You can copy objects between different AWS Regions or within the same Region.
+
+Use Same-Region replication (SRR) to replicate data between distant AWS Region?
+	- SRR is used to copy objects across Amazon S3 buckets in the same AWS Region
+
+
+AWS services support High Availability by default?
+	- Dynamo DB
+	- EFS
+
+
+Statements are true about Cost Allocation Tags in AWS Billing
+	- For each resource, each tag key must be unique, and each tag key can have only one value
+
+	- You must activate both AWS generated tags and user-defined tags separately before they can appear in Cost Explorer or on a cost allocation report
+
+
+Best practices for AWS IAM service?
+	- Enable MFA for all users
+	- Rotate credentials regularly
+
+Amazon Kendra:
+	- Amazon Kendra is an intelligent search service powered by machine learning. Kendra reimagines enterprise search for your websites and applications so your employees and customers can easily find the content they are looking for, even when it’s scattered across multiple locations and content repositories within your organization.
+
+cost-effective EC2 instance purchasing option for short-term, spiky and critical workloads on AWS Cloud
+	- Spot Instance
+
+privately connect your VPC to an Amazon SQS queue
+	VPC Interface Endpoint
+
+
+
+ensure that all customer data uploaded on its data lake on Amazon S3 always stays private
+	- Use Amazon S3 Block Public Access to ensure that all S3 reFsources stay private
+
+sure that you select the right resource types and sizes based on your workload requirements
+	- Performance Efficiency
+
+
+DevOps team at a Big Data consultancy has set up EC2 instances across two AWS Regions for its flagship applications
+	- Deploying the application across two AWS Regions improves availability
+
+Some of these instances host the CRM (Customer Relationship Management) applications that need to be accessible 24*7. These applications are not mission-critical. In case of a disaster, these applications can be managed on a lesser number of instances for some time
+	- Warm Standby strategy
+
+
+S3 storage classes do not charge any data retrieval fee? 
+	- S3 Standard
+	- S3 Intelligent-Tiering 
+
+types are free under the Amazon S3 pricing model
+	- Data transferred in from the internet
+	- Data transferred out to an Amazon Elastic Compute Cloud (Amazon EC2) instance, when the instance is in the same AWS Region as the S3 bucket
+
+
+S3 storage classes has NO constraint of a minimum storage duration charge for objects
+	- S3 Standard
+
+Multi-Factor Authentication (MFA) device that you can plug into a USB port on your computer
+	- U2F Security Key
+
+Security and Compliance is a shared responsibility between AWS and the customer
+	- AWS Shield Standard
+
+AWS Route 53 routing policy would you use to route traffic to a single resource such as a web server for your website
+	- Simple Routing Policy
+
+create a logically isolated section of the AWS Cloud where you can launch AWS resources in your virtual network?
+	- VPC
+
+migrate to a serverless stack on AWS
+	- Lambda can be used for preprocessing of data before it is stored in Amazon S3 buckets
+	- Lambda can be used to execute code in response to events such as updates to DynamoDB tables
